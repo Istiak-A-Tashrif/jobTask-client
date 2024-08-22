@@ -8,8 +8,8 @@ import { CiSearch } from "react-icons/ci";
 function Home() {
   const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedPrice, setSelectedPrice] = useState("lowToHigh");
-  const [selectedDate, setSelectedDate] = useState("newestFirst");
+  const [selectedPrice, setSelectedPrice] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedRange, setSelectedRange] = useState("");
@@ -53,7 +53,7 @@ function Home() {
       selectedPrice,
       selectedDate,
     });
-    // Optionally, close the drawer here if needed
+    queryClient.invalidateQueries(['home'])
   };
 
   const {data: products = [], isLoading, isError, error} = useQuery({
@@ -62,7 +62,7 @@ function Home() {
   })
 
   const getData = async () => {
-    const {data} = await axios (`${import.meta.env.VITE_URL}?search=${searchQuery}`)
+    const {data} = await axios (`${import.meta.env.VITE_URL}?search=${searchQuery}&brand=${selectedBrand}&category=${selectedCategory}&price=${selectedPrice}&date=${selectedDate}&range=${selectedRange}`)
     return data;
   }
 
@@ -147,12 +147,11 @@ function Home() {
               <option value="" disabled>
                 Select price range
               </option>
-              <option value="0-5000">0 - 5000</option>
-              <option value="5000-10000">5000 - 10000</option>
-              <option value="10000-20000">10000 - 20000</option>
-              <option value="20000-50000">20000 - 50000</option>
-              <option value="50000-100000">50000 - 100000</option>
-              <option value="100000-Max">100000 - Max</option>
+              <option value="500">0 - 500</option>
+              <option value="750">501 - 750</option>
+              <option value="1000">751 - 1000</option>
+              <option value="1500">1001 - 1500</option>
+              <option value="1500">1501 - above</option>
             </select>
           </div>
           <h2 className="text-lg font-bold mt-3">Sort Options</h2>
@@ -163,8 +162,8 @@ function Home() {
                 <input
                   type="radio"
                   name="price"
-                  value="lowToHigh"
-                  checked={selectedPrice === "lowToHigh"}
+                  value="1"
+                  checked={selectedPrice === "1"}
                   onChange={handlePriceChange}
                   className="radio radio-sm"
                 />
@@ -174,8 +173,8 @@ function Home() {
                 <input
                   type="radio"
                   name="price"
-                  value="highToLow"
-                  checked={selectedPrice === "highToLow"}
+                  value="-1"
+                  checked={selectedPrice === "-1"}
                   onChange={handlePriceChange}
                   className="radio radio-sm"
                 />
@@ -190,8 +189,8 @@ function Home() {
                 <input
                   type="radio"
                   name="date"
-                  value="newestFirst"
-                  checked={selectedDate === "newestFirst"}
+                  value="-1"
+                  checked={selectedDate === "-1"}
                   onChange={handleDateChange}
                   className="radio radio-sm"
                 />
@@ -201,8 +200,8 @@ function Home() {
                 <input
                   type="radio"
                   name="date"
-                  value="oldestFirst"
-                  checked={selectedDate === "oldestFirst"}
+                  value="1"
+                  checked={selectedDate === "1"}
                   onChange={handleDateChange}
                   className="radio radio-sm"
                 />
