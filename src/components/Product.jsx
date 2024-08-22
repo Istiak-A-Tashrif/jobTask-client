@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { createContext } from 'react';
+export const valueContext = createContext (null);
 
-const Product = ({
-  name,
-  image,
-  description,
-  price,
-  category,
-  brand,
-  ratings,
-  creationDate,
-}) => {
+const Product = ({product}) => {
+  const {
+    name,
+    image,
+    description,
+    price,
+    category,
+    brand,
+    ratings,
+    creationDate,
+  } = product;
+
   return (
-    <div className="card w-max bg-base-100 shadow-xl mx-auto">
+    <div className="card bg-base-100 shadow-xl mx-auto">
       <figure>
         <img src={image} alt={name} className="object-cover h-48 w-full" />
       </figure>
