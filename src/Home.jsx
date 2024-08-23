@@ -107,7 +107,7 @@ const handleSearchSubmit = () => {
 
   return (
     <>
-      <div className="drawer z-10">
+      <div className="drawer z-10 my-4">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col items-center justify-center">
           <div className="navbar bg-base-100 flex justify-center items-center flex-wrap">
@@ -263,7 +263,7 @@ const handleSearchSubmit = () => {
         ))}
       </div>
 
-      <div className="flex justify-center gap-5 my-6">
+      <div className="flex flex-wrap justify-center gap-5 my-6">
         <button onClick={handlePrevious} className={`btn btn-primary w-20 ${currentPage===1?'btn-disabled':''}`} >
           Previous
         </button>
