@@ -6,10 +6,9 @@ import { FaFilter } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 
 function Home() {
-  const queryClient = useQueryClient();
-
   const [count, setCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [inputValue, setInputValue] = useState('');
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPrice, setSelectedPrice] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
@@ -31,14 +30,14 @@ function Home() {
         });
 }, [searchQuery, selectedBrand, selectedCategory, selectedRange]);
 
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
+const handleSearchChange = (e) => {
+  setInputValue(e.target.value);
+};
 
-  const handleSearchSubmit = () => {
+const handleSearchSubmit = () => {
     // Send the search query to the backend
-    console.log("Search Query:", searchQuery);
-    queryClient.invalidateQueries(["home"]);
+    setSearchQuery(inputValue);
+    console.log('Search query submitted:', inputValue);
   };
 
   const handlePriceChange = (e) => {
@@ -60,18 +59,15 @@ function Home() {
   const handleRangeChange = (e) => {
     setSelectedRange(e.target.value);
   };
- // const handleFilterSubmit = () => {
-  //   // Collect filter data and send it to the backend
-  //   console.log("Filters applied:", {
-  //     selectedBrand,
-  //     selectedCategory,
-  //     selectedRange,
-  //     selectedPrice,
-  //     selectedDate,
-  //   });
-  //   queryClient.invalidateQueries(["home"]);
-  // };
- 
+
+  const clearAll = () => {
+    setSearchQuery('')
+    setSelectedBrand('')
+    setSelectedCategory('')
+    setSelectedPrice('')
+    setSelectedDate('')
+    setSelectedRange('')
+  }
 
   const itemsPerPage = 6;
   const pages = [...Array(Math.ceil(count / itemsPerPage)).keys()].map(
@@ -96,7 +92,7 @@ function Home() {
     error,
   } = useQuery({
     queryFn: () => getData(),
-    queryKey: ["home", currentPage, selectedBrand,selectedCategory, selectedDate, selectedPrice, selectedRange],
+    queryKey: ["home", currentPage, selectedBrand,selectedCategory, selectedDate, selectedPrice, selectedRange, searchQuery],
   });
 
   const getData = async () => {
@@ -117,21 +113,21 @@ function Home() {
             <div className="flex-1 flex justify-between items-center w-full md:w-auto">
               <a className="btn btn-ghost text-xl">eMart</a>
               <div className="form-control flex flex-grow md:flex-grow-0 md:ml-2">
-                <div className="flex justify-center items-center">
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                    placeholder="Search"
-                    className="input input-bordered w-full md:w-auto border-r-0 rounded-r-none focus:outline-none"
-                  />
-                  <button
-                    className="btn btn-square rounded-l-none"
-                    onClick={handleSearchSubmit}
-                  >
-                    <CiSearch className="text-2xl" />
-                  </button>
-                </div>
+              <div className="flex justify-center items-center">
+      <input
+        type="text"
+        value={inputValue}
+        onChange={handleSearchChange}
+        placeholder="Search"
+        className="input input-bordered w-full md:w-auto border-r-0 rounded-r-none focus:outline-none"
+      />
+      <button
+        className="btn btn-square rounded-l-none"
+        onClick={handleSearchSubmit}
+      >
+        <CiSearch className="text-2xl" />
+      </button>
+    </div>
               </div>
             </div>
             <div className="flex items-center ml-2">
@@ -251,12 +247,12 @@ function Home() {
                 </label>
               </div>
             </div>
-            {/* <button
+            <button
               className="btn btn-primary mt-4 w-full"
-              onClick={handleFilterSubmit}
+              onClick={clearAll}
             >
-              Apply Filters
-            </button> */}
+              clear Filters
+            </button>
           </div>
         </div>
       </div>
