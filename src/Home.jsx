@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react";
-import Product from "./components/Product";
+import Product from "./components/Product/Product";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { FaFilter } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import { TiDeleteOutline } from "react-icons/ti";
+import Footer from "./components/Footer/Footer";
+import { Link } from "react-router-dom";
+import useAuth from "./Hooks/useAuth";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Home() {
+  const {user, userSignOut} = useAuth()
   const [count, setCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [inputValue, setInputValue] = useState('');
@@ -136,6 +142,7 @@ const handleSearchSubmit = () => {
                 <FaFilter className="text-xl" />
               </label>
             </div>
+            {user ? <button className="btn ml-2" onClick={userSignOut}>Log out</button> : <Link to={'/login'} className="btn ml-2">Log in</Link>}
           </div>
         </div>
         <div className="drawer-side">
@@ -280,6 +287,20 @@ const handleSearchSubmit = () => {
           Next
         </button>
       </div>
+      <Footer></Footer>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        transition:Slide
+      />
     </>
   );
 }
