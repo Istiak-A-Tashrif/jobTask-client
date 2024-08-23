@@ -4,6 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { FaFilter } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
+import { TiDeleteOutline } from "react-icons/ti";
 
 function Home() {
   const [count, setCount] = useState(0);
@@ -248,10 +249,10 @@ const handleSearchSubmit = () => {
               </div>
             </div>
             <button
-              className="btn btn-primary mt-4 w-full"
+              className="btn btn-error mt-4 w-full"
               onClick={clearAll}
             >
-              clear Filters
+             <TiDeleteOutline className="text-lg" /> Clear Filters
             </button>
           </div>
         </div>
