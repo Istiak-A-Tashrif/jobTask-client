@@ -10,8 +10,6 @@ import { Link } from "react-router-dom";
 import useAuth from "./Hooks/useAuth";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import loading from "./assets/loading.json";
-import Lottie from "lottie-react";
 
 function Home() {
   const {user, userSignOut} = useAuth()
@@ -24,8 +22,6 @@ function Home() {
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedRange, setSelectedRange] = useState("");
-
-  console.log(currentPage);
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_URL}/count?search=${searchQuery}&brand=${selectedBrand}&category=${selectedCategory}&range=${selectedRange}`)
@@ -46,7 +42,6 @@ const handleSearchChange = (e) => {
 const handleSearchSubmit = () => {
     // Send the search query to the backend
     setSearchQuery(inputValue);
-    console.log('Search query submitted:', inputValue);
   };
 
   const handlePriceChange = (e) => {
@@ -112,18 +107,6 @@ const handleSearchSubmit = () => {
     );
     return data;
   };
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center  min-h-[100vh]">
-        <Lottie animationData={loading} loop={true} className="h-44"></Lottie>
-      </div>
-    );
-  }
-
-  if (isError || error) {
-    console.error(error);
-  }
 
   return (
     <>
